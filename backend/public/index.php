@@ -16,7 +16,8 @@ $routes = require __DIR__ . '/../routes/api.php';
 $method = strtoupper(($_SERVER['REQUEST_METHOD']) ?? 'GET');
 
 $basePath = '/projects/room-booking-portal/backend/public/index.php';
-$uri = str_replace($basePath, '', $_SERVER['REQUEST_URI'] ?? '/');
+$uri = $_SERVER['REQUEST_URI'] ?? '/';
+$uri = str_replace($basePath, '', $uri);
 $uri = rtrim($uri, '/') ?: '/';
 $uri = strtolower($uri);
 
