@@ -13,9 +13,14 @@ class RoomRepository {
     }
 
     public function findAll(): array {
-        $stmt = $this->pdo->query('SELECT * FROM rooms');
-        $rows = $stmt->fetchAll();
+        try {
+            $stmt = $this->pdo->query('SELECT * FROM rooms');
+            $rows = $stmt->fetchAll();
 
-        return array_map(fn($row) => new Room($row), $rows);
+            return array_map(fn($row) => new Room($row), $rows);
+
+        } catch(\PDOException $e) {
+            throw new \App\Exceptions\InternalServerException("Failed to fetch rooms");
+        }
     }
 }

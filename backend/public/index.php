@@ -7,6 +7,11 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../include/autoload.php';
 
 use App\Database\Database;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\ValidationException;
+use App\Exceptions\UnauthorizedException;
+use App\Exceptions\ForbiddenException;
+use App\Exceptions\InternalServerException;
 
 header('Content-Type: application/json');
 
@@ -54,14 +59,34 @@ if (isset($routes[$method][$uri])) {
             'data' => $response,
         ]);
 
+    } catch (NotFoundException $e) {
+        http_response_code(404);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
+    } catch (ValidationException $e) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
+    } catch (UnauthorizedException $e) {
+        http_response_code(401);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
+    } catch (ForbiddenException $e) {
+        http_response_code(403);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
+    } catch (InternalServerException $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
     } catch (\Throwable $e) {
+        // fallback for unexpected errors
         error_log($e->getMessage());
         http_response_code(500);
         echo json_encode([
             'status' => 'error',
             'message' => 'Service unavailable',
         ]);
-        exit();
     }
 } else {
     http_response_code(404);
