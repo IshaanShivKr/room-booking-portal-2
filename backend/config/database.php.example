@@ -1,0 +1,10 @@
+<?php
+// Copy this file to database.php and adjust credentials
+
+return [
+    'host' => 'localhost',
+    'dbname' => 'BookingDB',
+    'user' => 'root',
+    'password' => '',
+    'charset' => 'utf8mb4',
+];

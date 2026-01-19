@@ -1,0 +1,15 @@
+backend/config/database.php
+backend/config/app.php
+
+.env
+.env.*
+
+backend/storage/
+backend/logs/
+backend/cache/
+backend/tmp/
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
