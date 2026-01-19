@@ -49,7 +49,10 @@ if (isset($routes[$method][$uri])) {
         [$controllerClass, $action] = $routes[$method][$uri];
         $controller = new $controllerClass($pdo);
         $response = $controller->$action();
-        echo json_encode($response);
+        echo json_encode([
+            'status' => 'success',
+            'data' => $response,
+        ]);
 
     } catch (\Throwable $e) {
         error_log($e->getMessage());

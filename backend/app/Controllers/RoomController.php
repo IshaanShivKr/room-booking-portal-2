@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\RoomService;
+use App\Http\ApiResponse;
 use PDO;
 
 class RoomController {
@@ -12,7 +13,12 @@ class RoomController {
         $this->service = new RoomService($pdo);
     }
 
-    public function index(): array {
-        return $this->service->getAllRooms();
+    public function index(): array
+    {
+        $rooms = $this->service->getAllRooms();
+
+        return ApiResponse::success(
+            array_map(fn($room) => $room->toArray(), $rooms)
+        );
     }
 }
