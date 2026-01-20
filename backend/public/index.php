@@ -20,9 +20,13 @@ $routes = require __DIR__ . '/../routes/api.php';
 
 $method = strtoupper(($_SERVER['REQUEST_METHOD']) ?? 'GET');
 
-$basePath = '/projects/room-booking-portal/backend/public/index.php';
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
-$uri = str_replace($basePath, '', $uri);
+$uri = parse_url($uri, PHP_URL_PATH);
+$scriptName = $_SERVER['SCRIPT_NAME'];
+$baseDir = dirname($scriptName);
+$uri = str_replace($scriptName, '', $uri);
+$uri = str_replace($baseDir, '', $uri);
+$uri = '/' . ltrim($uri, '/');
 $uri = rtrim($uri, '/') ?: '/';
 $uri = strtolower($uri);
 
@@ -52,12 +56,14 @@ try {
 if (isset($routes[$method][$uri])) {
     try {
         [$controllerClass, $action] = $routes[$method][$uri];
-        $controller = new $controllerClass($pdo);
+
+        $repository = new \App\Repositories\RoomRepository($pdo);
+        $service = new \App\Services\RoomService($repository);
+        $controller = new $controllerClass($service);
+
         $response = $controller->$action();
-        echo json_encode([
-            'status' => 'success',
-            'data' => $response,
-        ]);
+
+        echo json_encode($response);
 
     } catch (NotFoundException $e) {
         http_response_code(404);

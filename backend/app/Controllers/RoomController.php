@@ -9,14 +9,13 @@ use PDO;
 class RoomController {
     private RoomService $service;
 
-    public function __construct(PDO $pdo) {
-        $this->service = new RoomService($pdo);
+    public function __construct(RoomService $service) {
+        $this->service = $service;
     }
 
     public function index(): array
     {
         $rooms = $this->service->getAllRooms();
-
         return ApiResponse::success(
             array_map(fn($room) => $room->toArray(), $rooms)
         );

@@ -8,8 +8,8 @@ use PDO;
 class RoomService {
     private RoomRepository $repo;
 
-    public function __construct(PDO $pdo) {
-        $this->repo = new RoomRepository($pdo);
+    public function __construct(RoomRepository $repo) {
+        $this->repo = $repo;
     }
 
     public function getAllRooms(): array {
