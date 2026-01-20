@@ -19,4 +19,12 @@ class BookingRepository extends BaseRepository {
         $booking_id = $this->pdo->lastInsertId();
         return $booking_id;
     }
+
+    /**
+     * TODO: Logic to check if a room is already occupied
+     */
+    public function hasOverlap(int $roomId, string $date, string $start, string $end): bool {
+        // This will eventually contain a SELECT COUNT(*) query with complex time logic
+        return false; 
+    }
 }

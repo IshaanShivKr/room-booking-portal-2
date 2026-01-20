@@ -12,4 +12,11 @@ class RoomRepository extends BaseRepository {
 
         return array_map(fn($row) => new Room($row), $rows);
     }
+
+    /**
+     * TODO: Check if room is 'active' or 'under maintenance'
+     */
+    public function isRoomBookable(int $roomId): bool {
+        return true;
+    }
 }
