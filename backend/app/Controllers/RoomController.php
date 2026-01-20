@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Services\RoomService;
 use App\Http\ApiResponse;
-use PDO;
 
 class RoomController {
     private RoomService $service;
