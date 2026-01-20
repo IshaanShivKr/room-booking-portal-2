@@ -15,4 +15,18 @@ abstract class BaseController {
 
         return $data ?? [];
     }
+
+    protected function validate(array $data, array $requiredFields): void {
+        $missingFields = [];
+
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || $data[$field] === '' || $data[$field] === null) {
+                $missingFields[] = $field;
+            }
+        }
+
+        if (!empty($missingFields)) {
+            throw new ValidationException("Missing required fields: " . implode(', ', $missingFields));
+        }
+    }
 }

@@ -57,12 +57,19 @@ if (isset($routes[$method][$uri])) {
     try {
         [$controllerClass, $action] = $routes[$method][$uri];
 
-        $repository = new \App\Repositories\RoomRepository($pdo);
-        $service = new \App\Services\RoomService($repository);
-        $controller = new $controllerClass($service);
+        if ($controllerClass === \App\Controllers\RoomController::class) {
+            $repository = new \App\Repositories\RoomRepository($pdo);
+            $service    = new \App\Services\RoomService($repository);
+            $controller = new $controllerClass($service);
+        } elseif ($controllerClass === \App\Controllers\BookingController::class) {
+            $repository = new \App\Repositories\BookingRepository($pdo);
+            $service    = new \App\Services\BookingService($repository);
+            $controller = new $controllerClass($service);
+        } else {
+            throw new InternalServerException("Controller mapping not found in index.php");
+        }
 
         $response = $controller->$action();
-
         echo json_encode($response);
 
     } catch (NotFoundException $e) {

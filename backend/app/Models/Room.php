@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-Use App\Models\BaseModel;
-
 class Room extends BaseModel {
     public int $id;
     public int $building_id;
